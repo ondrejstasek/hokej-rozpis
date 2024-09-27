@@ -21,54 +21,37 @@ struct RozpisHokej: ParsableCommand {
             string: "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2024&filter%5BmanagingAuthorities%5D=7&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_118&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC"
         )!
         let request = URLRequest(url: url)
-        URLSession.shared.downloadTask(with: request) { url, response, error in
+        URLSession.shared.downloadTask(with: request) { url, _, _ in
             defer {
                 semaphore.signal()
             }
             guard
-                let url
+                let url,
+                let csvData = try? Data(contentsOf: url),
+                let windowsString = String(data: csvData, encoding: .windowsCP1250),
+                let utfData = windowsString.data(using: .utf8)
             else {
-                print("url")
                 return
+            }
+
+            let decoder = CSVDecoder {
+                $0.headerStrategy = .firstLine
+                $0.encoding = .utf8
+                $0.delimiters.field = ";"
             }
             do {
-                let csvData = try Data(contentsOf: url)
-                guard
-                    let windowsString = String(data: csvData, encoding: .windowsCP1250)
-                else {
-                    print("windowsString")
-                    return
+                let events = try decoder.decode([Event].self, from: utfData)
+                var cal = ICalendar()
+                cal.events = events.map { event in
+                    ICalendarEvent(
+                        dtstart: event.isAllDay ? .dateOnly(event.startDate) : .dateTime(event.startDate),
+                        location: event.stadion.label,
+                        summary: "\(event.home) - \(event.away)",
+                        dtend: event.isAllDay ? .dateOnly(event.endDate) : .dateTime(event.endDate)
+                    )
                 }
-                guard
-                    let utfData = windowsString.data(using: .utf8)
-                else {
-                    print("utfData")
-                    return
-                }
-
-                let decoder = CSVDecoder {
-                    $0.headerStrategy = .firstLine
-                    $0.encoding = .utf8
-                    $0.delimiters.field = ";"
-                }
-                do {
-                    let events = try decoder.decode([Event].self, from: utfData)
-                    var cal = ICalendar()
-                    cal.events = events.map { event in
-                        ICalendarEvent(
-                            dtstart: event.isAllDay ? .dateOnly(event.startDate) : .dateTime(event.startDate),
-                            location: event.stadion.label,
-                            summary: "\(event.home) - \(event.away)",
-                            dtend: event.isAllDay ? .dateOnly(event.endDate) : .dateTime(event.endDate)
-                        )
-                    }
-                    print(cal.vEncoded)
-                } catch {}
-            } catch {
-                print("csvData")
-                return
-            }
-
+                print(cal.vEncoded)
+            } catch {}
         }.resume()
         semaphore.wait()
     }
