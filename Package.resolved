@@ -1,0 +1,42 @@
+{
+  "originHash" : "f0448a578303739c5e0e8b736dda24b22d729bbb328408a772fbf35be532eacb",
+  "pins" : [
+    {
+      "identity" : "codablecsv",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dehesa/CodableCSV.git",
+      "state" : {
+        "revision" : "99ace2cfdfbc19108b529c021005fb57a460e715",
+        "version" : "0.6.7"
+      }
+    },
+    {
+      "identity" : "icalendarkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-calendar/icalendarkit.git",
+      "state" : {
+        "revision" : "389fceafc1132ef284c6215118421bc88f1bfc8c",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser.git",
+      "state" : {
+        "revision" : "41982a3656a71c768319979febd796c6fd111d5c",
+        "version" : "1.5.0"
+      }
+    },
+    {
+      "identity" : "vcomponentkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-calendar/vcomponentkit.git",
+      "state" : {
+        "revision" : "65b7f5066fd62fb83811e66e26ee21a326a015ac",
+        "version" : "1.0.5"
+      }
+    }
+  ],
+  "version" : 3
+}
