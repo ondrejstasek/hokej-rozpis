@@ -4,8 +4,11 @@
 // Swift Argument Parser
 // https://swiftpackageindex.com/apple/swift-argument-parser/documentation
 
-import ArgumentParser
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+import ArgumentParser
 import CodableCSV
 import ICalendarKit
 
