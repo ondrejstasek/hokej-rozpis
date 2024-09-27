@@ -22,12 +22,16 @@ struct RozpisHokej: ParsableCommand {
         )!
         let request = URLRequest(url: url)
         URLSession.shared.downloadTask(with: request) { url, response, error in
+            defer {
+                semaphore.signal()
+            }
             guard
                 let url,
                 let csvData = try? Data(contentsOf: url),
                 let windowsString = String(data: csvData, encoding: .windowsCP1250),
                 let utfData = windowsString.data(using: .utf8)
             else {
+                print("chyba")
                 return
             }
 
@@ -49,8 +53,6 @@ struct RozpisHokej: ParsableCommand {
                 }
                 print(cal.vEncoded)
             } catch {}
-
-            semaphore.signal()
         }.resume()
         semaphore.wait()
     }
