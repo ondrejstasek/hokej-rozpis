@@ -33,7 +33,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Run swift script
-        run: swift run
+        run: swift run > mladsi-zaci.ics
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
