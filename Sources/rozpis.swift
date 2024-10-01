@@ -42,13 +42,28 @@ struct RozpisHokej: ParsableCommand {
             do {
                 let events = try decoder.decode([Event].self, from: utfData)
                 var cal = ICalendar()
-                cal.events = events.map { event in
-                    ICalendarEvent(
-                        dtstart: event.isAllDay ? .dateOnly(event.startDate) : .dateTime(event.startDate),
-                        location: event.stadion.label,
-                        summary: "\(event.home) - \(event.away)",
-                        dtend: event.isAllDay ? .dateOnly(event.endDate) : .dateTime(event.endDate)
+                cal.events = events.flatMap { event in
+                    var items = [ICalendarEvent]()
+                    if !event.isAllDay {
+                        items.append(
+                            ICalendarEvent(
+                                dtstart: .dateTime(event.startDate.addingTimeInterval(-1 * 60 * 60)),
+                                location: event.stadion.label,
+                                summary: "Sraz hodinu před zápasem + rozcvička",
+                                duration: .hours(1),
+                                xAppleTravelDuration: event.stadion.travelDuration
+                            )
+                        )
+                    }
+                    items.append(
+                        ICalendarEvent(
+                            dtstart: event.isAllDay ? .dateOnly(event.startDate) : .dateTime(event.startDate),
+                            location: event.stadion.label,
+                            summary: "\(event.home) - \(event.away)",
+                            dtend: event.isAllDay ? .dateOnly(event.endDate) : .dateTime(event.endDate)
+                        )
                     )
+                    return items
                 }
                 print(cal.vEncoded)
             } catch {}
@@ -159,6 +174,25 @@ enum Stadion: String, Decodable {
         case .benesov: return "Benešov, Zimní stadion"
         case .sedlcany: return "Sedlčany, Zimní stadion"
         case .spartaPraha: return "Praha - Holešovice, Sportovní hala Fortuna"
+        }
+    }
+
+    var travelDuration: ICalendarDuration {
+        switch self {
+        case .beroun: return .minutes(12)
+        case .kladno: return .minutes(45)
+        case .pribram: return .minutes(60)
+        case .horovice: return .minutes(30)
+        case .kralupy: return .minutes(75)
+        case .cernosice: return .minutes(30)
+        case .kobraPraha: return .minutes(60)
+        case .rakovnik: return .minutes(45)
+        case .spmArenaPraha: return .minutes(45)
+        case .slany: return .minutes(60)
+        case .hvezdaPraha: return .minutes(45)
+        case .benesov: return .minutes(75)
+        case .sedlcany: return .minutes(75)
+        case .spartaPraha: return .minutes(60)
         }
     }
 }

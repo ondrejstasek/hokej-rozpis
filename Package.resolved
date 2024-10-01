@@ -1,5 +1,5 @@
 {
-  "originHash" : "f0448a578303739c5e0e8b736dda24b22d729bbb328408a772fbf35be532eacb",
+  "originHash" : "14ce100f17b996533d60c909c64463438bf632aecb8465694b718e51aa2aaba5",
   "pins" : [
     {
       "identity" : "codablecsv",
@@ -13,10 +13,10 @@
     {
       "identity" : "icalendarkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swift-calendar/icalendarkit.git",
+      "location" : "https://github.com/ondrejstasek/icalendarkit.git",
       "state" : {
-        "revision" : "389fceafc1132ef284c6215118421bc88f1bfc8c",
-        "version" : "1.0.2"
+        "revision" : "78da87673ff503e3708b30a29e83f30e83aca4c1",
+        "version" : "1.1.0"
       }
     },
     {
