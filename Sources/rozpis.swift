@@ -190,7 +190,7 @@ enum Stadion: String, Decodable {
         case .spmArenaPraha: return .minutes(45)
         case .slany: return .minutes(60)
         case .hvezdaPraha: return .minutes(45)
-        case .benesov: return .minutes(75)
+        case .benesov: return .minutes(90)
         case .sedlcany: return .minutes(75)
         case .spartaPraha: return .minutes(60)
         }
