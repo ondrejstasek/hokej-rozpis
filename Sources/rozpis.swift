@@ -179,7 +179,7 @@ enum Stadion: String, Decodable {
 
     var travelDuration: ICalendarDuration {
         switch self {
-        case .beroun: return .minutes(12)
+        case .beroun: return .minutes(15)
         case .kladno: return .minutes(45)
         case .pribram: return .minutes(60)
         case .horovice: return .minutes(30)
