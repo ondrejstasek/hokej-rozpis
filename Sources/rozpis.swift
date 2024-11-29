@@ -42,7 +42,7 @@ struct RozpisHokej: ParsableCommand {
             do {
                 let events = try decoder.decode([Event].self, from: utfData)
                 var cal = ICalendar()
-                cal.events = events.flatMap { event in
+                cal.events = events.filter { !["Nehraje se"].contains($0.state) }.flatMap { event in
                     var items = [ICalendarEvent]()
                     if !event.isAllDay {
                         items.append(
@@ -81,6 +81,7 @@ struct Event: Decodable {
     let stadion: Stadion
     let home: String
     let away: String
+    let state: String
 
     enum CodingKeys: Int, CodingKey {
         case den = 0
@@ -100,6 +101,7 @@ struct Event: Decodable {
         home = try container.decode(String.self, forKey: .domaci)
         away = try container.decode(String.self, forKey: .hoste)
         stadion = try container.decode(Stadion.self, forKey: .zimniStadion)
+        state = try container.decode(String.self, forKey: .stav)
 
         let dateTimeFormatter = DateFormatter()
         dateTimeFormatter.timeZone = TimeZone(identifier: "Europe/Prague")
