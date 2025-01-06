@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "HockeyScheduleCalendar",
+    platforms: [
+        .macOS(.v12),
+    ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
         .package(url: "https://github.com/dehesa/CodableCSV.git", from: "0.6.7"),

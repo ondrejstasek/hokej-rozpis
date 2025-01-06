@@ -13,62 +13,55 @@ import CodableCSV
 import ICalendarKit
 
 @main
-struct RozpisHokej: ParsableCommand {
+struct RozpisHokej: AsyncParsableCommand {
 
-    mutating func run() throws {
-        let semaphore = DispatchSemaphore(value: 0)
-        let url = URL(
+    mutating func run() async throws {
+        let requestUrl = URL(
             string: "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2024&filter%5BmanagingAuthorities%5D=7&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_118&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC"
         )!
-        let request = URLRequest(url: url)
-        URLSession.shared.downloadTask(with: request) { url, _, _ in
-            defer {
-                semaphore.signal()
-            }
-            guard
-                let url,
-                let csvData = try? Data(contentsOf: url),
-                let windowsString = String(data: csvData, encoding: .windowsCP1250),
-                let utfData = windowsString.data(using: .utf8)
-            else {
-                return
-            }
+        let request = URLRequest(url: requestUrl)
+        let (responseUrl, _) = try await URLSession.shared.download(for: request)
+        guard
+            let csvData = try? Data(contentsOf: responseUrl),
+            let windowsString = String(data: csvData, encoding: .windowsCP1250),
+            let utfData = windowsString.data(using: .utf8)
+        else {
+            return
+        }
 
-            let decoder = CSVDecoder {
-                $0.headerStrategy = .firstLine
-                $0.encoding = .utf8
-                $0.delimiters.field = ";"
-            }
-            do {
-                let events = try decoder.decode([Event].self, from: utfData)
-                var cal = ICalendar()
-                cal.events = events.filter { !["Nehraje se"].contains($0.state) }.flatMap { event in
-                    var items = [ICalendarEvent]()
-                    if !event.isAllDay {
-                        items.append(
-                            ICalendarEvent(
-                                dtstart: .dateTime(event.startDate.addingTimeInterval(-1 * 60 * 60)),
-                                location: event.stadion.label,
-                                summary: "Sraz hodinu před zápasem + rozcvička",
-                                duration: .hours(1),
-                                xAppleTravelDuration: event.stadion.travelDuration
-                            )
-                        )
-                    }
+        let decoder = CSVDecoder {
+            $0.headerStrategy = .firstLine
+            $0.encoding = .utf8
+            $0.delimiters.field = ";"
+        }
+        do {
+            let events = try decoder.decode([Event].self, from: utfData)
+            var cal = ICalendar()
+            cal.events = events.filter { !["Nehraje se"].contains($0.state) }.flatMap { event in
+                var items = [ICalendarEvent]()
+                if !event.isAllDay {
                     items.append(
                         ICalendarEvent(
-                            dtstart: event.isAllDay ? .dateOnly(event.startDate) : .dateTime(event.startDate),
+                            dtstart: .dateTime(event.startDate.addingTimeInterval(-1 * 60 * 60)),
                             location: event.stadion.label,
-                            summary: "\(event.home) - \(event.away)",
-                            dtend: event.isAllDay ? .dateOnly(event.endDate) : .dateTime(event.endDate)
+                            summary: "Sraz hodinu před zápasem + rozcvička",
+                            duration: .hours(1),
+                            xAppleTravelDuration: event.stadion.travelDuration
                         )
                     )
-                    return items
                 }
-                print(cal.vEncoded)
-            } catch {}
-        }.resume()
-        semaphore.wait()
+                items.append(
+                    ICalendarEvent(
+                        dtstart: event.isAllDay ? .dateOnly(event.startDate) : .dateTime(event.startDate),
+                        location: event.stadion.label,
+                        summary: "\(event.home) - \(event.away)",
+                        dtend: event.isAllDay ? .dateOnly(event.endDate) : .dateTime(event.endDate)
+                    )
+                )
+                return items
+            }
+            print(cal.vEncoded)
+        }
     }
 
 }
@@ -159,6 +152,7 @@ enum Stadion: String, Decodable {
     case benesov = "BN"
     case sedlcany = "SD"
     case spartaPraha = "S"
+    case vystavistePraha = "V"
 
     var label: String {
         switch self {
@@ -176,6 +170,7 @@ enum Stadion: String, Decodable {
         case .benesov: return "Benešov, Zimní stadion"
         case .sedlcany: return "Sedlčany, Zimní stadion"
         case .spartaPraha: return "Praha - Holešovice, Sportovní hala Fortuna"
+        case .vystavistePraha: return "Praha - Výstaviště, Malá sportovní hala"
         }
     }
 
@@ -195,6 +190,7 @@ enum Stadion: String, Decodable {
         case .benesov: return .minutes(90)
         case .sedlcany: return .minutes(75)
         case .spartaPraha: return .minutes(60)
+        case .vystavistePraha: return .minutes(45)
         }
     }
 }
