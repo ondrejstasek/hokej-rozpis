@@ -139,7 +139,7 @@ struct Event: Decodable {
 
 enum Stadion: String, Decodable {
     case beroun = "BE"
-    case kladno = "KD"
+    case kladno = "KL"
     case pribram = "PB"
     case horovice = "HC"
     case kralupy = "KR"
