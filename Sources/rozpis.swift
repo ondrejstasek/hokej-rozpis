@@ -17,7 +17,7 @@ struct RozpisHokej: AsyncParsableCommand {
 
     mutating func run() async throws {
         let requestUrl = URL(
-            string: "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2024&filter%5BmanagingAuthorities%5D=7&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_118&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC"
+            string: "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_118&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC"
         )!
         let request = URLRequest(url: requestUrl)
         let (responseUrl, _) = try await URLSession.shared.download(for: request)
