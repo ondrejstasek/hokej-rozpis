@@ -6,7 +6,7 @@ on:
     branches: ["main"]
   workflow_dispatch:
   schedule:
-    - cron: "0 8 * * *"
+    - cron: "0 20 * * *"
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -47,6 +47,7 @@ jobs:
 
       - name: Generate index.html
         run: |
+          export TZ=Europe/Prague
           CURRENT_TIME=$(date '+%d. %m. %Y v %H:%M')
 
           cat > export/index.html << 'EOF'
@@ -55,6 +56,9 @@ jobs:
           <head>
               <meta charset="UTF-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+              <meta http-equiv="Pragma" content="no-cache">
+              <meta http-equiv="Expires" content="0">
               <title>Hokejové kalendáře HC Beroun</title>
               <style>
                   body {
@@ -151,7 +155,7 @@ jobs:
               <h1>🏒 Hokejové kalendáře HC Beroun</h1>
               <p class="description">
                   Zde najdete aktuální rozpisy zápasů pro všechny týmy HC Beroun ve formátu iCalendar. 
-                  Kalendáře jsou automaticky aktualizovány každý den v 8:00.
+                  Kalendáře jsou automaticky aktualizovány každý den.
               </p>
               
               <div class="instructions">
