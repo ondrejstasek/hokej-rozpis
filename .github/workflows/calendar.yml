@@ -47,6 +47,8 @@ jobs:
 
       - name: Generate index.html
         run: |
+          CURRENT_TIME=$(date '+%d. %m. %Y v %H:%M')
+
           cat > export/index.html << 'EOF'
           <!DOCTYPE html>
           <html lang="cs">
@@ -172,7 +174,7 @@ jobs:
                   echo "                  <div class=\"calendar-item\">" >> index.html
                   echo "                      <div class=\"calendar-name\">$filename</div>" >> index.html
                   echo "                      <div class=\"calendar-buttons\">" >> index.html
-                  echo "                          <a href=\"webcal://$(echo $GITHUB_REPOSITORY | sed 's/.*\///').github.io/$(echo $GITHUB_REPOSITORY | sed 's/.*\///')/$file\" class=\"calendar-link subscribe\">Odebírat</a>" >> index.html
+                  echo "                          <a href=\"webcal://ondrejstasek.github.io/hokej-rozpis/$file\" class=\"calendar-link subscribe\">Odebírat</a>" >> index.html
                   echo "                          <a href=\"$file\" class=\"calendar-link\" download>Stáhnout</a>" >> index.html
                   echo "                      </div>" >> index.html
                   echo "                  </div>" >> index.html
@@ -180,11 +182,11 @@ jobs:
           done
           cd ..
           
-          cat >> export/index.html << 'EOF'
+          cat >> export/index.html << EOF
               </div>
               
               <div class="last-updated">
-                  Kalendáře byly naposledy aktualizovány: $(date '+%d. %m. %Y v %H:%M')
+                  Kalendáře byly naposledy aktualizovány: ${CURRENT_TIME}
               </div>
           </body>
           </html>
