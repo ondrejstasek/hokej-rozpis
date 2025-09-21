@@ -45,6 +45,153 @@ jobs:
       - name: List generated files
         run: ls -la export/
 
+      - name: Generate index.html
+        run: |
+          cat > export/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="cs">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Hokejové kalendáře HC Beroun</title>
+              <style>
+                  body {
+                      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                      max-width: 800px;
+                      margin: 40px auto;
+                      padding: 20px;
+                      background-color: #f5f7fa;
+                      color: #2c3e50;
+                      line-height: 1.6;
+                  }
+                  h1 {
+                      color: #2980b9;
+                      text-align: center;
+                      border-bottom: 3px solid #3498db;
+                      padding-bottom: 10px;
+                      margin-bottom: 30px;
+                  }
+                  .calendar-list {
+                      background: white;
+                      border-radius: 10px;
+                      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                      overflow: hidden;
+                  }
+                  .calendar-item {
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      padding: 15px 20px;
+                      border-bottom: 1px solid #ecf0f1;
+                      transition: background-color 0.3s ease;
+                  }
+                  .calendar-item:last-child {
+                      border-bottom: none;
+                  }
+                  .calendar-item:hover {
+                      background-color: #f8f9fa;
+                  }
+                  .calendar-name {
+                      font-weight: 600;
+                      color: #2c3e50;
+                      flex-grow: 1;
+                  }
+                  .calendar-buttons {
+                      display: flex;
+                      gap: 10px;
+                  }
+                  .calendar-link {
+                      background-color: #3498db;
+                      color: white;
+                      padding: 8px 16px;
+                      text-decoration: none;
+                      border-radius: 5px;
+                      transition: background-color 0.3s ease;
+                      font-weight: 500;
+                      font-size: 0.9em;
+                  }
+                  .calendar-link:hover {
+                      background-color: #2980b9;
+                  }
+                  .calendar-link.subscribe {
+                      background-color: #27ae60;
+                  }
+                  .calendar-link.subscribe:hover {
+                      background-color: #229954;
+                  }
+                  .description {
+                      text-align: center;
+                      color: #7f8c8d;
+                      margin-bottom: 30px;
+                  }
+                  .last-updated {
+                      text-align: center;
+                      color: #95a5a6;
+                      font-size: 0.9em;
+                      margin-top: 30px;
+                      padding-top: 20px;
+                      border-top: 1px solid #ecf0f1;
+                  }
+                  .instructions {
+                      background-color: #e8f5e8;
+                      border-left: 4px solid #27ae60;
+                      padding: 15px;
+                      margin: 20px 0;
+                      border-radius: 5px;
+                  }
+                  .instructions h3 {
+                      margin-top: 0;
+                      color: #27ae60;
+                  }
+              </style>
+          </head>
+          <body>
+              <h1>🏒 Hokejové kalendáře HC Beroun</h1>
+              <p class="description">
+                  Zde najdete aktuální rozpisy zápasů pro všechny týmy HC Beroun ve formátu iCalendar. 
+                  Kalendáře jsou automaticky aktualizovány každý den v 8:00.
+              </p>
+              
+              <div class="instructions">
+                  <h3>📱 Jak přidat kalendář:</h3>
+                  <ul>
+                      <li><strong>Odebírat kalendář:</strong> Klikněte na "Odebírat" - kalendář se bude automaticky aktualizovat</li>
+                      <li><strong>Jednorázové stažení:</strong> Klikněte na "Stáhnout" pro import aktuálního stavu (bez aktualizací)</li>
+                  </ul>
+              </div>
+              
+              <div class="calendar-list">
+          EOF
+          
+          # Dynamicky generovat seznam kalendářů na základě skutečných souborů
+          cd export
+          for file in *.ics; do
+              if [ -f "$file" ]; then
+                  filename="${file%.ics}"
+                  
+                  echo "                  <div class=\"calendar-item\">" >> index.html
+                  echo "                      <div class=\"calendar-name\">$filename</div>" >> index.html
+                  echo "                      <div class=\"calendar-buttons\">" >> index.html
+                  echo "                          <a href=\"webcal://$(echo $GITHUB_REPOSITORY | sed 's/.*\///')github.io/$(echo $GITHUB_REPOSITORY | sed 's/.*\///')/$file\" class=\"calendar-link subscribe\">Odebírat</a>" >> index.html
+                  echo "                          <a href=\"$file\" class=\"calendar-link\" download>Stáhnout</a>" >> index.html
+                  echo "                      </div>" >> index.html
+                  echo "                  </div>" >> index.html
+              fi
+          done
+          cd ..
+          
+          cat >> export/index.html << 'EOF'
+              </div>
+              
+              <div class="last-updated">
+                  Kalendáře byly naposledy aktualizovány: $(date '+%d. %m. %Y v %H:%M')
+              </div>
+          </body>
+          </html>
+          EOF
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
