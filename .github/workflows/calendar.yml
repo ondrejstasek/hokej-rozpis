@@ -172,7 +172,7 @@ jobs:
                   echo "                  <div class=\"calendar-item\">" >> index.html
                   echo "                      <div class=\"calendar-name\">$filename</div>" >> index.html
                   echo "                      <div class=\"calendar-buttons\">" >> index.html
-                  echo "                          <a href=\"webcal://$(echo $GITHUB_REPOSITORY | sed 's/.*\///')github.io/$(echo $GITHUB_REPOSITORY | sed 's/.*\///')/$file\" class=\"calendar-link subscribe\">Odebírat</a>" >> index.html
+                  echo "                          <a href=\"webcal://$(echo $GITHUB_REPOSITORY | sed 's/.*\///').github.io/$(echo $GITHUB_REPOSITORY | sed 's/.*\///')/$file\" class=\"calendar-link subscribe\">Odebírat</a>" >> index.html
                   echo "                          <a href=\"$file\" class=\"calendar-link\" download>Stáhnout</a>" >> index.html
                   echo "                      </div>" >> index.html
                   echo "                  </div>" >> index.html
