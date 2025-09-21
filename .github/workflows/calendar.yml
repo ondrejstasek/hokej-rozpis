@@ -161,8 +161,8 @@ jobs:
               <div class="instructions">
                   <h3>📱 Jak přidat kalendář:</h3>
                   <ul>
-                      <li><strong>Odebírat kalendář:</strong> Klikněte na "Odebírat" - kalendář se bude automaticky aktualizovat</li>
-                      <li><strong>Jednorázové stažení:</strong> Klikněte na "Stáhnout" pro import aktuálního stavu (bez aktualizací)</li>
+                      <li>Kliknutím na <strong>Odebírat</strong> si kalendář přidáte do Vaší kalendářové aplikace v telefonu nebo počítači</li>
+                      <li>Kalendář se Vám bude pravidelně automaticky aktualizovat podle toho, jak budou v rozpisu přibývat vypsané zápasy</li>
                   </ul>
               </div>
               
@@ -179,7 +179,6 @@ jobs:
                   echo "                      <div class=\"calendar-name\">$filename</div>" >> index.html
                   echo "                      <div class=\"calendar-buttons\">" >> index.html
                   echo "                          <a href=\"webcal://ondrejstasek.github.io/hokej-rozpis/$file\" class=\"calendar-link subscribe\">Odebírat</a>" >> index.html
-                  echo "                          <a href=\"$file\" class=\"calendar-link\" download>Stáhnout</a>" >> index.html
                   echo "                      </div>" >> index.html
                   echo "                  </div>" >> index.html
               fi
