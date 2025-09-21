@@ -154,7 +154,7 @@ jobs:
           <body>
               <h1>🏒 Hokejové kalendáře HC Beroun</h1>
               <p class="description">
-                  Zde najdete aktuální rozpisy zápasů pro všechny týmy HC Beroun ve formátu iCalendar. 
+                  Zde najdete aktuální rozpisy zápasů pro všechny týmy HC Beroun ve formátu iCalendar.<br />
                   Kalendáře jsou automaticky aktualizovány každý den.
               </p>
               
