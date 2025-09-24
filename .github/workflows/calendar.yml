@@ -306,7 +306,7 @@ jobs:
                   <ul>
                       <li>Kliknutím na <strong>Odebírat</strong> si kalendář přidáte do Vaší kalendářové aplikace v telefonu nebo počítači (nefunguje spolehlivě na Androidu)</li>
                       <li>Na Androidu je možné použít tlačítko <strong>Přidat do Google</strong> pro přidání do Google Kalendáře</li>
-                      <li>Pokud automatické přidání do Google Kalendáře selže, je možné přidat kalendář zkopírováním URL adresy příslušného kalendáře a <a href=\"https://calendar.google.com/calendar/r/settings/addbyurl\">vložením manuálně do Google Kalendáře</a></li>
+                      <li>Pokud automatické přidání do Google Kalendáře selže, je možné přidat kalendář zkopírováním URL adresy příslušného kalendáře a <a href="https://calendar.google.com/calendar/r/settings/addbyurl">vložením manuálně do Google Kalendáře</a></li>
                       <li>Kalendář se Vám bude pravidelně automaticky aktualizovat podle toho, jak budou v rozpisu přibývat vypsané zápasy</li>
                   </ul>
               </div>
@@ -326,7 +326,7 @@ jobs:
                   echo "                          <div class=\"calendar-name\">$filename</div>" >> index.html
                   echo "                          <div class=\"calendar-buttons\">" >> index.html
                   echo "                              <a href=\"webcal://$calendar_url\" class=\"calendar-link subscribe\">Odebírat</a>" >> index.html
-                  echo "                              <a href=\"https://calendar.google.com/calendar/render?cid=webcal://$calendar_url\" class=\"calendar-link google\" target=\"_blank\">Přidat do Google</a>" >> index.html
+                  echo "                              <a href=\"https://calendar.google.com/calendar/render?cid=https://$calendar_url\" class=\"calendar-link google\" target=\"_blank\">Přidat do Google</a>" >> index.html
                   echo "                          </div>" >> index.html
                   echo "                      </div>" >> index.html
                   echo "                      <div class=\"url-container\">" >> index.html
