@@ -98,9 +98,17 @@ jobs:
               <h3>📱 Jak přidat kalendář:</h3>
               <ul>
                 <li><strong>Odebírat kalendář:</strong> Klikněte na „Odebírat" – automatické aktualizace (iOS, macOS, Outlook)</li>
-                <li><strong>Přidat do Google:</strong> Klikněte na „Přidat do Google" – přidá do Google kalendáře (Android, web)</li>
+                <li><strong>Přidat do Google:</strong> Klikněte na „Přidat do Google" – přidá do Google kalendáře (web)</li>
                 <li><strong>Kopírovat URL:</strong> Pro manuální import do libovolné aplikace</li>
               </ul>
+            </div>
+
+            <div class="note">
+              <h3>🤖 Pro Android uživatele:</h3>
+              <p>
+                Odkazy „Odebírat" na Androidu obvykle nefungují a ani není možné přidat kalendář přes Google Kalendář aplikaci v telefonu.
+                Je potřeba se přihlásit do Google Kalendáře přes web (ať už v mobilu nebo počítači) a pak si vybraný kalendář přidat pomocí tlačítka "Přidat do Google".
+              </p>
             </div>
           EOF
           
