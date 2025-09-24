@@ -324,19 +324,14 @@ jobs:
                   echo "                  <div class=\"calendar-item\">" >> index.html
                   echo "                      <div class=\"calendar-header\">" >> index.html
                   echo "                          <div class=\"calendar-name\">$filename</div>" >> index.html
-                  echo "                      </div>" >> index.html
-                  echo "                      " >> index.html
-                  echo "                      <div class=\"calendar-url-section\">" >> index.html
-                  echo "                          <div class=\"url-label\">URL kalendáře:</div>" >> index.html
-                  echo "                          <div class=\"url-container\">" >> index.html
-                  echo "                              <div class=\"calendar-url\">https://$calendar_url</div>" >> index.html
-                  echo "                              <button class=\"copy-btn\" onclick=\"copyToClipboard('https://$calendar_url', this)\">Kopírovat</button>" >> index.html
+                  echo "                          <div class=\"calendar-buttons\">" >> index.html
+                  echo "                              <a href=\"webcal://$calendar_url\" class=\"calendar-link subscribe\">Odebírat</a>" >> index.html
+                  echo "                              <a href=\"https://calendar.google.com/calendar/render?cid=webcal://$calendar_url\" class=\"calendar-link google\" target=\"_blank\">Přidat do Google</a>" >> index.html
                   echo "                          </div>" >> index.html
                   echo "                      </div>" >> index.html
-                  echo "                      " >> index.html
-                  echo "                      <div class=\"calendar-buttons\">" >> index.html
-                  echo "                          <a href=\"webcal://$calendar_url\" class=\"calendar-link subscribe\">Odebírat</a>" >> index.html
-                  echo "                          <a href=\"https://calendar.google.com/calendar/u/0/r/addbyurl?cid=webcal://$calendar_url\" class=\"calendar-link google\" target=\"_blank\">Přidat do Google</a>" >> index.html
+                  echo "                      <div class=\"url-container\">" >> index.html
+                  echo "                          <div class=\"calendar-url\">https://$calendar_url</div>" >> index.html
+                  echo "                          <button class=\"copy-btn\" onclick=\"copyToClipboard('https://$calendar_url', this)\">Kopírovat</button>" >> index.html
                   echo "                      </div>" >> index.html
                   echo "                  </div>" >> index.html
               fi
