@@ -47,303 +47,98 @@ jobs:
 
       - name: Generate index.html
         run: |
+          # Získat aktuální datum a čas v české časové zóně
           export TZ=Europe/Prague
           CURRENT_TIME=$(date '+%d. %m. %Y v %H:%M')
+
+          # Načíst konfiguraci kalendářů z JSON
+          CALENDARS_JSON=$(cat config.json)
 
           cat > export/index.html << 'EOF'
           <!DOCTYPE html>
           <html lang="cs">
           <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-              <meta http-equiv="Pragma" content="no-cache">
-              <meta http-equiv="Expires" content="0">
-              <title>Hokejové kalendáře HC Beroun</title>
-              <style>
-                  body {
-                      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                      max-width: 900px;
-                      margin: 40px auto;
-                      padding: 20px;
-                      background-color: #f5f7fa;
-                      color: #2c3e50;
-                      line-height: 1.6;
-                  }
-                  h1 {
-                      color: #2980b9;
-                      text-align: center;
-                      border-bottom: 3px solid #3498db;
-                      padding-bottom: 10px;
-                      margin-bottom: 30px;
-                  }
-                  .calendar-list {
-                      background: white;
-                      border-radius: 10px;
-                      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                      overflow: hidden;
-                  }
-                  .calendar-item {
-                      padding: 20px;
-                      border-bottom: 1px solid #ecf0f1;
-                      transition: background-color 0.3s ease;
-                  }
-                  .calendar-item:last-child {
-                      border-bottom: none;
-                  }
-                  .calendar-item:hover {
-                      background-color: #f8f9fa;
-                  }
-                  .calendar-header {
-                      display: flex;
-                      justify-content: space-between;
-                      align-items: center;
-                      margin-bottom: 15px;
-                  }
-                  .calendar-name {
-                      font-weight: 600;
-                      color: #2c3e50;
-                      font-size: 1.1em;
-                      flex-grow: 1;
-                  }
-                  .calendar-url-section {
-                      background-color: #f8f9fa;
-                      padding: 10px;
-                      border-radius: 5px;
-                      margin-bottom: 15px;
-                      border: 1px solid #e9ecef;
-                  }
-                  .url-label {
-                      font-size: 0.9em;
-                      color: #6c757d;
-                      margin-bottom: 5px;
-                      font-weight: 500;
-                  }
-                  .url-container {
-                      display: flex;
-                      gap: 10px;
-                      align-items: center;
-                  }
-                  .calendar-url {
-                      font-family: 'Courier New', monospace;
-                      font-size: 0.85em;
-                      background-color: white;
-                      padding: 8px 12px;
-                      border: 1px solid #dee2e6;
-                      border-radius: 4px;
-                      flex-grow: 1;
-                      color: #495057;
-                      word-break: break-all;
-                      min-height: 20px;
-                  }
-                  .copy-btn {
-                      background-color: #6c757d;
-                      color: white;
-                      border: none;
-                      padding: 8px 12px;
-                      border-radius: 4px;
-                      cursor: pointer;
-                      font-size: 0.85em;
-                      white-space: nowrap;
-                      transition: background-color 0.3s ease;
-                      min-width: 70px;
-                  }
-                  .copy-btn:hover {
-                      background-color: #5a6268;
-                  }
-                  .copy-btn.copied {
-                      background-color: #28a745;
-                  }
-                  .calendar-buttons {
-                      display: flex;
-                      gap: 10px;
-                      flex-wrap: wrap;
-                  }
-                  .calendar-link {
-                      background-color: #3498db;
-                      color: white;
-                      padding: 10px 16px;
-                      text-decoration: none;
-                      border-radius: 5px;
-                      transition: background-color 0.3s ease;
-                      font-weight: 500;
-                      font-size: 0.9em;
-                      text-align: center;
-                      min-width: 80px;
-                  }
-                  .calendar-link:hover {
-                      background-color: #2980b9;
-                  }
-                  .calendar-link.subscribe {
-                      background-color: #27ae60;
-                  }
-                  .calendar-link.subscribe:hover {
-                      background-color: #229954;
-                  }
-                  .calendar-link.google {
-                      background-color: #db4437;
-                  }
-                  .calendar-link.google:hover {
-                      background-color: #c23321;
-                  }
-                  .description {
-                      text-align: center;
-                      color: #7f8c8d;
-                      margin-bottom: 30px;
-                  }
-                  .last-updated {
-                      text-align: center;
-                      color: #95a5a6;
-                      font-size: 0.9em;
-                      margin-top: 30px;
-                      padding-top: 20px;
-                      border-top: 1px solid #ecf0f1;
-                  }
-                  .instructions {
-                      background-color: #e8f5e8;
-                      border-left: 4px solid #27ae60;
-                      padding: 15px;
-                      margin: 20px 0;
-                      border-radius: 5px;
-                  }
-                  .instructions h3 {
-                      margin-top: 0;
-                      color: #27ae60;
-                  }
-                  
-                  /* Mobile responsiveness */
-                  @media (max-width: 768px) {
-                      body {
-                          margin: 20px auto;
-                          padding: 15px;
-                      }
-                      .calendar-item {
-                          padding: 15px;
-                      }
-                      .calendar-header {
-                          flex-direction: column;
-                          align-items: flex-start;
-                          gap: 10px;
-                      }
-                      .calendar-name {
-                          font-size: 1.05em;
-                      }
-                      .url-container {
-                          flex-direction: column;
-                          gap: 8px;
-                      }
-                      .calendar-url {
-                          font-size: 0.8em;
-                          padding: 10px;
-                      }
-                      .copy-btn {
-                          align-self: stretch;
-                          padding: 10px;
-                      }
-                      .calendar-buttons {
-                          flex-direction: column;
-                          gap: 8px;
-                      }
-                      .calendar-link {
-                          padding: 12px 16px;
-                          font-size: 0.95em;
-                      }
-                  }
-                  
-                  @media (max-width: 480px) {
-                      .calendar-url {
-                          font-size: 0.75em;
-                          line-height: 1.4;
-                      }
-                      .copy-btn {
-                          font-size: 0.9em;
-                      }
-                  }
-              </style>
-              <script>
-                  function copyToClipboard(text, button) {
-                      navigator.clipboard.writeText(text).then(function() {
-                          const originalText = button.textContent;
-                          button.textContent = 'Zkopírováno!';
-                          button.classList.add('copied');
-                          
-                          setTimeout(function() {
-                              button.textContent = originalText;
-                              button.classList.remove('copied');
-                          }, 2000);
-                      }).catch(function(err) {
-                          console.error('Chyba při kopírování: ', err);
-                          // Fallback pro starší prohlížeče
-                          const textArea = document.createElement('textarea');
-                          textArea.value = text;
-                          document.body.appendChild(textArea);
-                          textArea.select();
-                          try {
-                              document.execCommand('copy');
-                              button.textContent = 'Zkopírováno!';
-                              button.classList.add('copied');
-                              setTimeout(function() {
-                                  button.textContent = 'Kopírovat';
-                                  button.classList.remove('copied');
-                              }, 2000);
-                          } catch(err) {
-                              button.textContent = 'Chyba!';
-                          }
-                          document.body.removeChild(textArea);
-                      });
-                  }
-              </script>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+            <meta http-equiv="Pragma" content="no-cache">
+            <meta http-equiv="Expires" content="0">
+            <title>Hokejové kalendáře HC Beroun</title>
+            <style>
+              body { font-family: 'Segoe UI', Tahoma, Verdana, sans-serif; max-width:900px; margin:40px auto; padding:20px; background:#f5f7fa; color:#2c3e50; }
+              h1 { text-align:center; color:#2980b9; border-bottom:3px solid #3498db; padding-bottom:10px; margin-bottom:30px; }
+              .calendar-item { background:#fff; border-radius:8px; padding:15px; margin-bottom:20px; box-shadow:0 2px 4px rgba(0,0,0,0.1); }
+              .header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; }
+              .name { font-weight:600; font-size:1.1em; color:#2c3e50; }
+              .buttons { display:flex; gap:8px; margin-top:8px; }
+              .btn { padding:8px 12px; text-decoration:none; color:#fff; border-radius:4px; font-size:0.9em; white-space:nowrap; }
+              .subscribe { background:#27ae60; }
+              .subscribe:hover { background:#229954; }
+              .google { background:#db4437; }
+              .google:hover { background:#c23321; }
+              .url-section { display:flex; gap:8px; align-items:center; margin-top:12px; flex-wrap:wrap; }
+              .url { font-family:monospace; background:#f8f9fa; padding:8px; border:1px solid #ddd; border-radius:4px; flex-grow:1; word-break:break-all; font-size:0.85em; }
+              .copy { background:#6c757d; border:none; color:#fff; padding:8px 12px; border-radius:4px; cursor:pointer; font-size:0.9em; }
+              .copy.copied { background:#28a745; }
+              .note { background:#fff3cd; border-left:4px solid #ffc107; padding:12px; border-radius:4px; margin-bottom:20px; }
+              .note h3 { margin-top:0; color:#856404; }
+              .instructions { background:#e8f5e8; border-left:4px solid #27ae60; padding:12px; border-radius:4px; margin-bottom:20px; }
+              .instructions h3 { margin-top:0; color:#27ae60; }
+              .last { text-align:center; color:#95a5a6; font-size:0.9em; margin-top:30px; }
+              @media(max-width:600px){ .header { flex-direction:column; align-items:flex-start; } .buttons{margin-top:4px;} .url-section{flex-direction:column;} }
+            </style>
+            <script>
+            function copyToClipboard(txt,btn){ navigator.clipboard.writeText(txt).then(()=>{ btn.textContent='Zkopírováno!'; btn.classList.add('copied'); setTimeout(()=>{btn.textContent='Kopírovat';btn.classList.remove('copied');},2000); }); }
+            </script>
           </head>
           <body>
-              <h1>🏒 Hokejové kalendáře HC Beroun</h1>
-              <p class="description">
-                  Zde najdete aktuální rozpisy zápasů pro všechny týmy HC Beroun ve formátu iCalendar.<br />
-                  Kalendáře jsou automaticky aktualizovány každý den.
-              </p>
-              
-              <div class="instructions">
-                  <h3>📱 Jak přidat kalendář:</h3>
-                  <ul>
-                      <li>Kliknutím na <strong>Odebírat</strong> si kalendář přidáte do Vaší kalendářové aplikace v telefonu nebo počítači (nefunguje spolehlivě na Androidu)</li>
-                      <li>Na Androidu je možné použít tlačítko <strong>Přidat do Google</strong> pro přidání do Google Kalendáře</li>
-                      <li>Pokud automatické přidání do Google Kalendáře selže, je možné přidat kalendář zkopírováním URL adresy příslušného kalendáře a <a href="https://calendar.google.com/calendar/r/settings/addbyurl">vložením manuálně do Google Kalendáře</a></li>
-                      <li>Kalendář se Vám bude pravidelně automaticky aktualizovat podle toho, jak budou v rozpisu přibývat vypsané zápasy</li>
-                  </ul>
-              </div>
-              
-              <div class="calendar-list">
+            <h1>🏒 Hokejové kalendáře HC Beroun</h1>
+            
+            <div class="instructions">
+              <h3>📱 Jak přidat kalendář:</h3>
+              <ul>
+                <li><strong>Odebírat kalendář:</strong> Klikněte na „Odebírat" – automatické aktualizace (iOS, macOS, Outlook)</li>
+                <li><strong>Přidat do Google:</strong> Klikněte na „Přidat do Google" – přidá do Google kalendáře (Android, web)</li>
+                <li><strong>Kopírovat URL:</strong> Pro manuální import do libovolné aplikace</li>
+              </ul>
+            </div>
           EOF
           
-          # Dynamicky generovat seznam kalendářů na základě skutečných souborů
-          cd export
-          for file in *.ics; do
-              if [ -f "$file" ]; then
-                  filename="${file%.ics}"
-                  calendar_url="ondrejstasek.github.io/hokej-rozpis/$file"
-                  
-                  echo "                  <div class=\"calendar-item\">" >> index.html
-                  echo "                      <div class=\"calendar-header\">" >> index.html
-                  echo "                          <div class=\"calendar-name\">$filename</div>" >> index.html
-                  echo "                          <div class=\"calendar-buttons\">" >> index.html
-                  echo "                              <a href=\"webcal://$calendar_url\" class=\"calendar-link subscribe\">Odebírat</a>" >> index.html
-                  echo "                              <a href=\"https://calendar.google.com/calendar/render?cid=https://$calendar_url\" class=\"calendar-link google\" target=\"_blank\">Přidat do Google</a>" >> index.html
-                  echo "                          </div>" >> index.html
-                  echo "                      </div>" >> index.html
-                  echo "                      <div class=\"url-container\">" >> index.html
-                  echo "                          <div class=\"calendar-url\">https://$calendar_url</div>" >> index.html
-                  echo "                          <button class=\"copy-btn\" onclick=\"copyToClipboard('https://$calendar_url', this)\">Kopírovat</button>" >> index.html
-                  echo "                      </div>" >> index.html
-                  echo "                  </div>" >> index.html
-              fi
+          # Generovat kalendáře z JSON konfigurace
+          echo "$CALENDARS_JSON" | jq -c '.[]' | while read -r calendar; do
+            filename=$(echo "$calendar" | jq -r '.filename')
+            title=$(echo "$calendar" | jq -r '.title')
+            googleID=$(echo "$calendar" | jq -r '.googleID')
+            
+            # URL kalendáře
+            calendar_url="https://ondrejstasek.github.io/hokej-rozpis/${filename}.ics"
+            
+            # Google Calendar URL - pokud je googleID prázdné, použije se addbyurl
+            if [ "$googleID" = "" ]; then
+              google_url="https://calendar.google.com/calendar/u/0/r/addbyurl?cid=${calendar_url}"
+            else
+              google_url="https://calendar.google.com/calendar/u/0/r?cid=${googleID}"
+            fi
+            
+            cat >> export/index.html << EOF
+            <div class='calendar-item'>
+              <div class='header'>
+                <div class='name'>${title}</div>
+                <div class='buttons'>
+                  <a href='webcal://${calendar_url}' class='btn subscribe'>Odebírat</a>
+                  <a href='${google_url}' class='btn google' target='_blank'>Přidat do Google</a>
+                </div>
+              </div>
+              <div class='url-section'>
+                <div class='url'>${calendar_url}</div>
+                <button class='copy' onclick="copyToClipboard('${calendar_url}',this)">Kopírovat</button>
+              </div>
+            </div>
+          EOF
           done
-          cd ..
           
           cat >> export/index.html << EOF
-              </div>
-              
-              <div class="last-updated">
-                  Kalendáře byly naposledy aktualizovány: ${CURRENT_TIME}
-              </div>
+          <div class='last'>Kalendáře byly naposledy aktualizovány: ${CURRENT_TIME} (česky čas)</div>
           </body>
           </html>
           EOF
@@ -354,7 +149,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'export'
-
+      
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

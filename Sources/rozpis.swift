@@ -1,7 +1,7 @@
 // The Swift Programming Language
 // https://docs.swift.org/swift-book
 //
-// Swift Argument Parser  
+// Swift Argument Parser
 // https://swiftpackageindex.com/apple/swift-argument-parser/documentation
 
 import Foundation
@@ -12,6 +12,13 @@ import ArgumentParser
 import CodableCSV
 import ICalendarKit
 
+// Struktura konfigurace kalendáře
+struct CalendarConfig: Codable {
+    let filename: String
+    let url: String
+    let title: String
+}
+
 @main
 struct RozpisHokej: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
@@ -19,34 +26,28 @@ struct RozpisHokej: AsyncParsableCommand {
         discussion: "Stáhne rozpis pro všechny konfigurované týmy a vytvoří iCal kalendáře"
     )
 
-    // Konfigurace týmů - klíč je název výstupního souboru, hodnota je URL
-    private let teamsConfig: [String: String] = [
-        "mladsi-zaci": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_118&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
-        "starsi-zaci": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_116&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
-        "muzi": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_84&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
-        "2-trida": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_143&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
-        "3-trida": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_144&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
-        "4-trida": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_145&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
-        "juniori": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_195&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
-        "dorost": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_197&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC"
-    ]
-
-    enum CodingKeys: CodingKey {}
-
     mutating func run() async throws {
-        print("Generuji kalendáře pro \(teamsConfig.count) týmů...")
+        // Načtení konfigurace z JSON souboru
+        let configUrl = URL(fileURLWithPath: "config.json")
+        let configData = try Data(contentsOf: configUrl)
+        let calendars = try JSONDecoder().decode([CalendarConfig].self, from: configData)
 
-        for (filename, url) in teamsConfig {
-            print("Generuji kalendář: \(filename).ics")
+        print("Generuji kalendáře pro \(calendars.count) týmů...")
+
+        for calendar in calendars {
+            print("Generuji kalendář: \(calendar.filename).ics (\(calendar.title))")
             do {
-                try await generateCalendar(url: url, outputFile: filename)
-                print("✓ Úspěšně vygenerován: \(filename).ics")
+                try await generateCalendar(
+                    url: calendar.url,
+                    outputFile: calendar.filename
+                )
+                print("✓ Úspěšně vygenerován: \(calendar.filename).ics")
             } catch {
-                print("✗ Chyba při generování \(filename).ics: \(error)")
+                print("✗ Chyba při generování \(calendar.filename).ics: \(error)")
             }
         }
 
-        print("Dokončeno. Vygenerováno \(teamsConfig.count) kalendářů.")
+        print("Dokončeno. Vygenerováno \(calendars.count) kalendářů.")
     }
 
     private func generateCalendar(url: String, outputFile: String) async throws {
@@ -104,12 +105,14 @@ struct RozpisHokej: AsyncParsableCommand {
                 return items
             }
 
-            // Zapsat výstup do souboru nebo na stdout
+            // Zapsat výstup do souboru
             let calendarData = cal.vEncoded
             if let outputDirectory = ProcessInfo.processInfo.environment["OUTPUT_DIR"] {
                 let outputPath = "\(outputDirectory)/\(outputFile).ics"
                 let outputUrl = URL(fileURLWithPath: outputPath)
                 try calendarData.write(to: outputUrl, atomically: true, encoding: .utf8)
+            } else {
+                print(calendarData)
             }
         } catch {
             throw ValidationError("Nepodařilo se parsovat CSV data: \(error)")
@@ -117,7 +120,7 @@ struct RozpisHokej: AsyncParsableCommand {
     }
 }
 
-// Zbytek kódu zůstává stejný (struct Event a enum Stadion)
+// Struktura pro událost
 struct Event: Decodable {
     let startDate: Date
     let endDate: Date

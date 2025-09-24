@@ -1,0 +1,50 @@
+[
+  {
+    "filename": "mladsi-zaci",
+    "title": "Mladší žáci",
+    "url": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_118&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
+    "googleID": "9vccsfjbbl6uiupp649hsnc1bcgsil5f@import.calendar.google.com"
+  },
+  {
+    "filename": "starsi-zaci",
+    "title": "Starší žáci",
+    "url": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_116&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
+    "googleID": "d3uso7r437apg2obplhs60l1b6dgbfeu@import.calendar.google.com"
+  },
+  {
+    "filename": "muzi",
+    "title": "Muži",
+    "url": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_84&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
+    "googleID": "qdqond0koa5k6bsdgnamssk5lidijmhe@import.calendar.google.com"
+  },
+  {
+    "filename": "2-trida",
+    "title": "2. třída",
+    "url": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_143&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
+    "googleID": "g8kud717rp0pnbsbdlupvoi5m2rg3vq2@import.calendar.google.com"
+  },
+  {
+    "filename": "3-trida",
+    "title": "3. třída",
+    "url": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_144&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
+    "googleID": "5mctsaoqh1t4pvbcjn61osmjbs7hevk0@import.calendar.google.com"
+  },
+  {
+    "filename": "4-trida",
+    "title": "4. třída",
+    "url": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_145&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
+    "googleID": "14c3mjm4bv3gr2a7b3iafq8d302m9jbu@import.calendar.google.com"
+  },
+  {
+    "filename": "juniori",
+    "title": "Junioři",
+    "url": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_195&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
+    "googleID": "jf77gk2au225ujh0m84fm1fj3fdujcfr@import.calendar.google.com"
+  },
+  {
+    "filename": "dorost",
+    "title": "Dorost",
+    "url": "https://zapasy.ceskyhokej.cz/admin/schedule/dashboard/export?filter%5Bseason%5D=2025&filter%5BdateRange%5D=&filter%5BmanagingAuthorities%5D=all&filter%5Bregion%5D=all&filter%5Bteam%5D=1534&filter%5BtimeShortcut%5D=&filter%5Bleague%5D=league_197&filter%5Bnumber%5D=&filter%5Bstadium%5D=all&filter%5Bstate%5D=&filter%5BteamType%5D=all&filter%5Bsort%5D=&filter%5Bdirection%5D=ASC",
+    "googleID": "3reuklgdmuik0cg86e4cbg31bi1ghk5j@import.calendar.google.com"
+  }
+]
