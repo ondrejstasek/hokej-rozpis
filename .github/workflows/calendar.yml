@@ -157,6 +157,44 @@ jobs:
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
 
+      - name: Validate generated files
+        run: |
+          set -e
+          echo "🔍 Validuji vygenerované soubory..."
+
+          # Zkontroluj index.html
+          if [ ! -f "export/index.html" ]; then
+            echo "❌ Chyba: index.html nebyl vygenerován!"
+            exit 1
+          fi
+
+          # Zkontroluj velikost index.html (měl by být větší než 1KB)
+          size=$(stat -f%z export/index.html 2>/dev/null || stat -c%s export/index.html 2>/dev/null || echo 0)
+          if [ "$size" -lt 1000 ]; then
+            echo "❌ Chyba: index.html je příliš malý ($size bytes), pravděpodobně se nevygeneroval správně!"
+            exit 1
+          fi
+
+          # Spočítej počet kalendářů v config.json
+          expected_count=$(jq length config.json)
+          echo "📋 Očekávaný počet kalendářů podle config.json: $expected_count"
+
+          # Spočítej vygenerované kalendáře
+          ics_count=$(ls export/*.ics 2>/dev/null | wc -l || echo 0)
+          echo "📅 Skutečný počet vygenerovaných .ics souborů: $ics_count"
+
+          # Porovnej počty
+          if [ "$ics_count" -ne "$expected_count" ]; then
+            echo "❌ Chyba: Počet vygenerovaných kalendářů ($ics_count) neodpovídá počtu v config.json ($expected_count)!"
+            echo "📝 Seznam očekávaných kalendářů:"
+            jq -r '.[].filename' config.json | sed 's/^/  - /'
+            echo "📁 Seznam vygenerovaných souborů:"
+            ls export/*.ics 2>/dev/null | xargs -n1 basename | sed 's/\.ics$//' | sed 's/^/  - /' || echo "  (žádné)"
+            exit 1
+          fi
+
+          echo "✅ Validace úspěšná: $ics_count kalendářů a index.html ($size bytes)"
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

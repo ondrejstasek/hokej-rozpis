@@ -34,6 +34,7 @@ struct RozpisHokej: AsyncParsableCommand {
 
         print("Generuji kalendáře pro \(calendars.count) týmů...")
 
+        var errorCount = 0
         for calendar in calendars {
             print("Generuji kalendář: \(calendar.filename).ics (\(calendar.title))")
             do {
@@ -43,10 +44,17 @@ struct RozpisHokej: AsyncParsableCommand {
                 )
                 print("✓ Úspěšně vygenerován: \(calendar.filename).ics")
             } catch {
+                errorCount += 1
                 print("✗ Chyba při generování \(calendar.filename).ics: \(error)")
             }
         }
 
+        
+        if errorCount > 0 {
+            print("❌ Celkové chyby: \(errorCount) z \(calendars.count) kalendářů")
+            Foundation.exit(1)
+        }
+        
         print("Dokončeno. Vygenerováno \(calendars.count) kalendářů.")
     }
 
