@@ -76,6 +76,8 @@ jobs:
               .subscribe:hover { background:#229954; }
               .google { background:#db4437; }
               .google:hover { background:#c23321; }
+              .calendar-view { background:#3498db; }
+              .calendar-view:hover { background:#2980b9; }
               .url-section { display:flex; gap:8px; align-items:center; margin-top:12px; flex-wrap:wrap; }
               .url { font-family:monospace; background:#f8f9fa; padding:8px; border:1px solid #ddd; border-radius:4px; flex-grow:1; word-break:break-all; font-size:0.85em; }
               .copy { background:#6c757d; border:none; color:#fff; padding:8px 12px; border-radius:4px; cursor:pointer; font-size:0.9em; }
@@ -99,6 +101,7 @@ jobs:
               <ul>
                 <li><strong>Odebírat kalendář:</strong> Klikněte na „Odebírat" – automatické aktualizace (iOS, macOS, Outlook)</li>
                 <li><strong>Přidat do Google:</strong> Klikněte na „Přidat do Google" – přidá do Google kalendáře (web)</li>
+                <li><strong>Zobrazit kalendář:</strong> Klikněte na „Zobrazit kalendář" – zobrazí se náhled kalendáře na webu</li>
                 <li><strong>Kopírovat URL:</strong> Pro manuální import do libovolné aplikace</li>
               </ul>
             </div>
@@ -135,6 +138,7 @@ jobs:
                 <div class='buttons'>
                   <a href='webcal://${calendar_url}' class='btn subscribe'>Odebírat</a>
                   <a href='${google_url}' class='btn google' target='_blank'>Přidat do Google</a>
+                  <a href='https://calendar.google.com/calendar/embed?src=${googleID}&ctz=Europe/Prague' class='btn calendar-view' target='_blank'>Zobrazit kalendář</a>
                 </div>
               </div>
               <div class='url-section'>
@@ -146,7 +150,7 @@ jobs:
           done
           
           cat >> export/index.html << EOF
-          <div class='last'>Kalendáře byly naposledy aktualizovány: ${CURRENT_TIME} (česky čas)</div>
+          <div class='last'>Kalendáře byly naposledy aktualizovány: ${CURRENT_TIME}</div>
           </body>
           </html>
           EOF
