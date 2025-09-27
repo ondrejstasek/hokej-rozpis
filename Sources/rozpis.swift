@@ -198,6 +198,7 @@ struct Event: Decodable {
 enum Stadion: String, Decodable {
     case beroun = "BE"
     case kladno = "KL"
+    case kladnoMalaHala = "KD"
     case pribram = "PB"
     case horovice = "HC"
     case kralupy = "KR"
@@ -234,6 +235,7 @@ enum Stadion: String, Decodable {
         switch self {
         case .beroun: "Beroun, Zimní stadion"
         case .kladno: "Kladno, ČEZ STADION Kladno"
+        case .kladnoMalaHala: "Kladno, ČEZ STADION Kladno - malá hala"
         case .pribram: "Příbram, Zimní stadion"
         case .horovice: "Hořovice, Zimní stadion"
         case .kralupy: "Kralupy nad Vltavou, Městský zimní stadion"
@@ -271,7 +273,7 @@ enum Stadion: String, Decodable {
     var travelDuration: ICalendarDuration {
         switch self {
         case .beroun: .minutes(15)
-        case .kladno: .minutes(45)
+        case .kladno, .kladnoMalaHala: .minutes(45)
         case .pribram: .minutes(60)
         case .horovice: .minutes(30)
         case .kralupy: .minutes(75)
