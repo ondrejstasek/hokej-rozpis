@@ -238,6 +238,7 @@ enum Stadion: String, Decodable {
     case kutnaHora = "KH"
     case benatkyNadJizerou = "BJ"
     case caslav = "ČA"
+    case kolin = "KO"
 
     var label: String {
         switch self {
@@ -275,6 +276,7 @@ enum Stadion: String, Decodable {
         case .kutnaHora: "Kutná Hora, Zimní stadion"
         case .benatkyNadJizerou: "Benátky nad Jizerou, Zimní stadion"
         case .caslav: "Čáslav, Zimní stadion"
+        case .kolin: "Kolín, Zimní stadion"
         }
     }
     
@@ -313,6 +315,7 @@ enum Stadion: String, Decodable {
         case .kutnaHora: .minutes(90)
         case .benatkyNadJizerou: .minutes(70)
         case .caslav: .minutes(90)
+        case .kolin: .minutes(90)
         }
     }
 }
