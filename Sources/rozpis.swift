@@ -208,6 +208,7 @@ enum Stadion: String, Decodable {
     case kladno = "KL"
     case kladnoMalaHala = "KD"
     case pribram = "PB"
+    case pribramMalaHala = "MP"
     case horovice = "HC"
     case kralupy = "KR"
     case cernosice = "CE"
@@ -246,6 +247,7 @@ enum Stadion: String, Decodable {
         case .kladno: "Kladno, ČEZ STADION Kladno"
         case .kladnoMalaHala: "Kladno, ČEZ STADION Kladno - malá hala"
         case .pribram: "Příbram, Zimní stadion"
+        case .pribramMalaHala: "Příbram, Zimní stadion - malá hala"
         case .horovice: "Hořovice, Zimní stadion"
         case .kralupy: "Kralupy nad Vltavou, Městský zimní stadion"
         case .cernosice: "Černošice, Zimní stadion"
@@ -284,7 +286,7 @@ enum Stadion: String, Decodable {
         switch self {
         case .beroun: .minutes(15)
         case .kladno, .kladnoMalaHala: .minutes(45)
-        case .pribram: .minutes(60)
+        case .pribram, .pribramMalaHala: .minutes(60)
         case .horovice: .minutes(30)
         case .kralupy: .minutes(75)
         case .cernosice: .minutes(40)
